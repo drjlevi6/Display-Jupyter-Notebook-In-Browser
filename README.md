@@ -13,7 +13,7 @@ Automatically open Jupyter notebooks in Google Chrome by double-clicking them.
  - In a Terminal window, run the command
  `jupyter notebook --generate-config`<p></p>
  This will create a directory`.jupyter`in your home folder; in this directory will be a file`jupyter_notebook_config.py.`
- - In this file, edit the line "`# c.NotebookApp.browser = ''`": Remove the `#` and change`''`to `'open -a /Applications/Google\ Chrome.app %s'`.
+ - In this file, edit the line "`# c.NotebookApp.browser = ''`": Remove the `#` and change`''`to `'open -a /path/to/your/browser.app %s'`.
 - Download `displayJupyterNotebookInBrowser.app` and `displayJupyterNotebookInBrowser.jxa.sh` from this repository. Move them to appropriate folders (`~/Library/Scripts` and `~/bin`, for example.)
 - Using the Script Editor, edit the last line of `displayJupyterNotebookInBrowser.app` to contain the appropriate path to `displayJupyterNotebookInBrowser.jxa.sh.`
 - Select any Jupyter notebook file (file type `.ipynb`). Enter Command-I to bring up its information window.

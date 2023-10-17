@@ -29,11 +29,10 @@ makeTerminalAtFinderFrontWindow(dirname)
 awaitGoogle()
 googleOpenLocation(fname)
 
+
 /*-----Functions--------------------------------------------------------------*/
 function googleOpenLocation(fname){
 	const myDelay = 0.3
-	google.activate()
-	delay(myDelay)
 	SE.keystroke("l", {using: "command down"})
 	delay(myDelay)	// 0.5
 	SE.keystroke("c", {using: "command down"})
@@ -41,14 +40,15 @@ function googleOpenLocation(fname){
 	clipdata = app.doShellScript('echo `pbpaste`').replace('http:\/\/', '')
 	delay(myDelay)
 	clipdata = clipdata.replace('tree', 'notebooks/' + fname)
-	delay(myDelay)
-	google.displayDialog('Are you sure you want to open the URL “' + 
-		clipdata + '”?', {withTitle: "Open URL?", withIcon: "caution"})
 	SE.keystroke(clipdata + '\r')
 }
 
 function awaitGoogle(){	// waits for Google Chrome to display tree for 
-						// Finder window of selected .ipynb
+												// Finder window of selected .ipynb
+	google.activate();
+	do{
+		delay(0.1)
+	}while(!googleP.exists());
 	do{
 		delay(0.1)
 	}while(googleP.frontmost() == false)
@@ -68,9 +68,9 @@ function getFolderOfFinderSelection(){
 	delay(0.3)
 	var currentTarget = finder.finderWindows[0].target()
 	var posixPath = 
-		Application('Finder').selection()[0].url().replace(/^file:\/\//, '')
-	posixPath = posixPath.replace(/\/[^\/]+$/, '')
-	return posixPath
+		Application('Finder').selection()[0].url().replace(/^file:\/\//, '').
+		replace(/%20/g, ' ')
+	return '"' + posixPath.replace(/(.+\/)[^\/]+$/, "$1") + '"';
 }
 
 function getFinderSelection(){	// returns name of selected Finder .ipynb file
@@ -80,5 +80,5 @@ function getFinderSelection(){	// returns name of selected Finder .ipynb file
 function makeTerminalAtFinderFrontWindow(dirname){
 	terminal.doScript("cd " + dirname) // else make a new window
 	terminal.activate()
-	terminal.doScript("Jupyter notebook", {in: terminal.windows[0]})
+	terminal.doScript("jupyter-notebook", {in: terminal.windows[0]})
 }
